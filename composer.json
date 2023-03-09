@@ -12,6 +12,7 @@
             "name": "Harry Gato"
         }
     ],
+    "license": "MIT",
     "require": {
         "php": ">=7.0.33"
     }
