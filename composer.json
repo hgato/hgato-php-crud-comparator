@@ -12,5 +12,7 @@
             "name": "Harry Gato"
         }
     ],
-    "require": {}
+    "require": {
+        "php": ">=7.0.33"
+    }
 }
