@@ -8,6 +8,9 @@ class Test
 {
     public function run()
     {
+        // TODO refactor
+        // TODO add tests for arrays
+        // TODO add tests for mixed
         $obj1 = new stdClass(); // leave 1
         $obj1->id1 = 1;
         $obj1->id2 = 'a';
