@@ -1,0 +1,16 @@
+{
+    "name": "hgato/php-crud-comparator",
+    "description": "Library to compare PHP model arrays",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Hgato\\PhpCrudComparator\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Harry Gato"
+        }
+    ],
+    "require": {}
+}
