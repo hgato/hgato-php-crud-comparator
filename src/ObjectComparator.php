@@ -2,6 +2,8 @@
 
 namespace Hgato\PhpCrudComparator;
 
+use Hgato\PhpCrudComparator\Exceptions\ModelTypeException;
+
 class ObjectComparator
 {
     private $old = [];
@@ -17,6 +19,7 @@ class ObjectComparator
      * @param array $ids
      * @param array $fields
      * @return void
+     * @throws ModelTypeException
      */
     public function compare(array $old, array $new, array $ids, array $fields)
     {
@@ -85,13 +88,17 @@ class ObjectComparator
      * @param $new
      * @param array $fields
      * @return void
+     * @throws ModelTypeException
      */
     private function checkUpdated($old, $new, array $fields)
     {
         if ($old && $new) {
             foreach ($fields as $field) {
-                if ($old->$field !== $new->$field) {
-                    $this->update []= $new;
+                if ($this->getValue($old, $field) !== $this->getValue($new, $field)) {
+                    foreach ($fields as $f) {
+                        $old->$f = $new->$f;
+                    }
+                    $this->update []= $old;
                     break;
                 }
             }
@@ -103,6 +110,7 @@ class ObjectComparator
      * @param array $new
      * @param array $ids
      * @return void
+     * @throws ModelTypeException
      */
     private function hash(array $old, array $new, array $ids)
     {
@@ -128,13 +136,31 @@ class ObjectComparator
      * @param $model
      * @param array $ids
      * @return string
+     * @throws ModelTypeException
      */
     private function makeKey($model, array $ids) : string
     {
         $keyArray = [];
         foreach ($ids as $id) {
-            $keyArray []= $model->$id;
+            $keyArray []= $this->getValue($model, $id);
         }
         return implode('-', $keyArray);
+    }
+
+    /**
+     * @param $model
+     * @param $key
+     * @return mixed
+     * @throws ModelTypeException
+     */
+    private function getValue($model, $key)
+    {
+        if (is_array($model)) {
+            return $model[$key];
+        }
+        if (is_object($model)) {
+            return $model->$key;
+        }
+        throw new ModelTypeException('Model must be of type array or object');
     }
 }
