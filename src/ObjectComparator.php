@@ -95,7 +95,10 @@ class ObjectComparator
         if ($old && $new) {
             foreach ($fields as $field) {
                 if ($this->getValue($old, $field) !== $this->getValue($new, $field)) {
-                    $this->update []= $new;
+                    foreach ($fields as $f) {
+                        $old->$f = $new->$f;
+                    }
+                    $this->update []= $old;
                     break;
                 }
             }
