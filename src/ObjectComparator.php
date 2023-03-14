@@ -96,7 +96,7 @@ class ObjectComparator
             foreach ($fields as $field) {
                 if ($this->getValue($old, $field) !== $this->getValue($new, $field)) {
                     foreach ($fields as $f) {
-                        $old->$f = $new->$f;
+                        $this->setValue($old, $f, $this->getValue($new, $f));
                     }
                     $this->update []= $old;
                     break;
@@ -160,6 +160,19 @@ class ObjectComparator
         }
         if (is_object($model)) {
             return $model->$key;
+        }
+        throw new ModelTypeException('Model must be of type array or object');
+    }
+
+    private function setValue(&$model, $key, $value)
+    {
+        if (is_array($model)) {
+            $model[$key] = $value;
+            return;
+        }
+        if (is_object($model)) {
+            $model->$key = $value;
+            return;
         }
         throw new ModelTypeException('Model must be of type array or object');
     }
